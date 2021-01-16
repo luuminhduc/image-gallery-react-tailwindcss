@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Header from './components/Header';
 import SearchImg from './components/SearchImg';
 import axios from 'axios';
@@ -40,22 +40,6 @@ const App = () => {
     }
 }
 
-  useEffect(() => {
-    if(limit !== 12) {
-      setLoading(true);
-      axios({
-        method:"GET",
-        url:`https://pixabay.com/api/?key=15977895-930a4cf88aa558815d6bf03e8&q=${term}&image_type=${type}&per_page=${limit}&pretty=true`
-    }).then((res) => {
-      setLoading(false)
-      setImageData(res.data);
-    }).catch(err => {
-      setLoading(false)
-
-      console.log(err);
-    })
-    }
-  }, [limit])
 
   const nextImage = () => {
     const currentIndex = imageData.hits.findIndex(el=>el.id === currentImage.id);
@@ -82,7 +66,7 @@ const App = () => {
       <ImageTypes type={type} setType={setType}/>
       {imageData? <ImageList setCurrentImage={setCurrentImage} list={imageData}/>:""}
      <Loading loading={loading}/>
-     {imageData? <More limit={limit} setLimit={setLimit} imageData={imageData}/>:""}
+     {imageData? <More fetchImageList={fetchImageList} limit={limit} setLimit={setLimit} imageData={imageData}/>:""}
      <ImageModal nextImage={nextImage} prevImage={prevImage} imageData={imageData} image={currentImage} setCurrentImage={setCurrentImage}/>
     </div>
   );
