@@ -13,7 +13,6 @@ const More = ({ imageData, limit, setLimit }) => {
     <div className="text-center mb-5">
       {totalHits > 0 && limit <= totalHits ? (
         <button
-          onClick={handleClick}
           onClick={() => setLimit(limit + 12)}
           className="px-4 py-2 bg-blue-600 hover:bg-blue-500 focus:outline-none text-white rounded cursor-pointer"
         >

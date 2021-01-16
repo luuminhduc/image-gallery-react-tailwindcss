@@ -20,11 +20,40 @@ const App = () => {
 
   const [limit, setLimit] = useState(12);
 
-  const [currentImage, setCurrentImage] = useState(true);
+  const [currentImage, setCurrentImage] = useState(null);
+
+  const fetchImageList = async (number) => {
+    setLoading(true);
+    try{
+        const res = await axios({
+            method:"GET",
+            url:`https://pixabay.com/api/?key=15977895-930a4cf88aa558815d6bf03e8&q=${term}&image_type=${type}&per_page=${number?number:limit}&pretty=true`
+        })
+        if(res.status === 200 || res.status === 201) {
+          setLoading(false)
+          setImageData(res.data);
+        }
+    }catch(err) {
+      setLoading(false)
+
+        console.log(err);
+    }
+}
 
   useEffect(() => {
     if(limit !== 12) {
-      fetchImageList();
+      setLoading(true);
+      axios({
+        method:"GET",
+        url:`https://pixabay.com/api/?key=15977895-930a4cf88aa558815d6bf03e8&q=${term}&image_type=${type}&per_page=${limit}&pretty=true`
+    }).then((res) => {
+      setLoading(false)
+      setImageData(res.data);
+    }).catch(err => {
+      setLoading(false)
+
+      console.log(err);
+    })
     }
   }, [limit])
 
@@ -45,24 +74,6 @@ const App = () => {
       setCurrentImage(imageData.hits[imageData.hits.length-1]);
     }
   }
-
-  const fetchImageList = async (number) => {
-    setLoading(true);
-    try{
-        const res = await axios({
-            method:"GET",
-            url:`https://pixabay.com/api/?key=15977895-930a4cf88aa558815d6bf03e8&q=${term}&image_type=${type}&per_page=${number?number:limit}&pretty=true`
-        })
-        if(res.status === 200 || res.status === 201) {
-          setLoading(false)
-          setImageData(res.data);
-        }
-    }catch(err) {
-      setLoading(false)
-
-        console.log(err);
-    }
-}
 
   return (
     <div className="min-h-screen bg-gray-100">
