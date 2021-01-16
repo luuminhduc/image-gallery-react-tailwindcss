@@ -1,0 +1,10 @@
+.loading {
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+}
+.circle {
+  height: 50px;
+  width: 50px;
+  border-top-color: #dc2626;
+}
